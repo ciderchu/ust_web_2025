@@ -1,0 +1,22 @@
+{#
+/**
+ * @file
+ * Theme override to display the About SES Main block.
+ */
+#}
+<div{{ attributes.addClass('about-ses-section', 'py-5') }}>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        {% if content.field_about_ses_title %}
+          <h2 class="about-ses-title mb-4">
+            {{ content.field_about_ses_title|without('field_label') }}
+          </h2>
+        {% endif %}
+        <div class="about-ses-paragraph">
+          {{ content.field_about_ses_content|without('field_label') }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

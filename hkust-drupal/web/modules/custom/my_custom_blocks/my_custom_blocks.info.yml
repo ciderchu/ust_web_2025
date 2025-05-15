@@ -1,0 +1,5 @@
+name: My Custom Blocks
+type: module
+description: 'Provides custom blocks for my site.'
+package: Custom
+core_version_requirement: ^9 || ^10

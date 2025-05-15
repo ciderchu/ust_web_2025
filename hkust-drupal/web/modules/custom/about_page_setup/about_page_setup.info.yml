@@ -1,0 +1,7 @@
+name: About Page Setup
+description: Sets up the about page with custom blocks
+type: module
+core_version_requirement: ^9 || ^10
+dependencies:
+  - drupal:block_content
+  - drupal:block

@@ -1,0 +1,45 @@
+{#
+/**
+ * @file
+ * Theme override for the Events Page view.
+ */
+#}
+
+<div class="events-page-wrapper">
+  <div class="events-page-header">
+    <h1 class="events-page-title">Events</h1>
+  </div>
+
+  {% if header %}
+    <div class="events-filters">
+      <h3 class="events-filters-title">Filter Events</h3>
+      {{ header }}
+    </div>
+  {% endif %}
+
+  {% if rows %}
+    <div class="events-grid">
+      {{ rows }}
+    </div>
+  {% else %}
+    <div class="no-events-message">
+      <p>No upcoming events at this time.</p>
+    </div>
+  {% endif %}
+
+  {% if pager %}
+    <div class="events-pagination">
+      {{ pager }}
+    </div>
+  {% endif %}
+</div>
+
+<div class="funded-by-section text-center my-5">
+  <div class = "organisation-name">
+     <img src="/themes/custom/hkust_theme/images/IENV_ENVR_logo.png" alt="IENV Logo" class="funded-by-logo funded-by-inev" style="max-height: 165px;"/>
+  </div>
+  <div class = "funded-by-sponsor">
+    <p class="funded-by-label">Funded By:</p>
+    <img src="/themes/custom/hkust_theme/images/logo_qef.svg" alt="QEF Logo" class="funded-by-logo" />
+  </div>   
+</div>

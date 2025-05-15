@@ -1,0 +1,105 @@
+<?php
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function hkust_theme_page_attachments_alter(array &$attachments) {
+  $current_path = \Drupal::service('path.current')->getPath();
+  $path_alias = \Drupal::service('path_alias.manager')->getAliasByPath($current_path);
+  
+  if ($path_alias == '/about') {
+    $attachments['#attached']['library'][] = 'hkust_theme/about_page';
+  }
+  elseif ($path_alias == '/teaching-resources') {
+    $attachments['#attached']['library'][] = 'hkust_theme/teaching_resources_page';
+  }
+  elseif ($path_alias == '/external-links') {
+    $attachments['#attached']['library'][] = 'hkust_theme/external_links';
+  }
+  elseif ($path_alias == '/contact-us') {
+    $attachments['#attached']['library'][] = 'hkust_theme/contact_us_page';
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for blocks.
+ */
+function hkust_theme_theme_suggestions_block_alter(array &$suggestions, array $variables) {
+  // Block suggestions for custom block bundles.
+  if (isset($variables['elements']['content']['#block_content'])) {
+    $block_content = $variables['elements']['content']['#block_content'];
+    
+    // Add bundle type suggestion
+    $suggestions[] = 'block__block_content__' . $block_content->bundle();
+  }
+}
+
+/**
+ * Implements hook_preprocess_block().
+ */
+function hkust_theme_preprocess_block(&$variables) {
+  // For teaching resource category blocks, add a unique ID for collapse functionality
+  if (isset($variables['elements']['content']['#block_content']) && 
+      $variables['elements']['content']['#block_content']->bundle() == 'teaching_resource_category') {
+    // Create a unique ID from the block ID
+    $block_id = $variables['elements']['#id'];
+    $variables['block_id'] = preg_replace('/[^a-z0-9]/', '_', strtolower($block_id));
+  }
+}
+
+/**
+ * Implements hook_preprocess_html().
+ */
+function hkust_theme_preprocess_html(&$variables) {
+  $current_path = \Drupal::service('path.current')->getPath();
+  $path_alias = \Drupal::service('path_alias.manager')->getAliasByPath($current_path);
+  
+  if ($path_alias == '/about') {
+    $variables['attributes']['class'][] = 'about-page';
+  }
+  elseif ($path_alias == '/teaching-resources') {
+    $variables['attributes']['class'][] = 'teaching-resources-page';
+  }
+  elseif ($path_alias == '/external-links') {
+    $variables['attributes']['class'][] = 'external-links-page';
+  }
+  elseif ($path_alias == '/contact-us') {
+    $variables['attributes']['class'][] = 'contact-us-page';
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for views templates.
+ */
+function hkust_theme_theme_suggestions_views_view_alter(array &$suggestions, array $variables) {
+  // Add view name and display ID as suggestions
+  $view = $variables['view'];
+  $display_id = $view->current_display;
+  
+  $suggestions[] = 'views_view__' . $view->id();
+  $suggestions[] = 'views_view__' . $view->id() . '__' . $display_id;
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for views unformatted templates.
+ */
+function hkust_theme_theme_suggestions_views_view_unformatted_alter(array &$suggestions, array $variables) {
+  // Add view name and display ID as suggestions
+  $view = $variables['view'];
+  $display_id = $view->current_display;
+  
+  $suggestions[] = 'views_view_unformatted__' . $view->id();
+  $suggestions[] = 'views_view_unformatted__' . $view->id() . '__' . $display_id;
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for views fields templates.
+ */
+function hkust_theme_theme_suggestions_views_view_fields_alter(array &$suggestions, array $variables) {
+  // Add view name and display ID as suggestions
+  $view = $variables['view'];
+  $display_id = $view->current_display;
+  
+  $suggestions[] = 'views_view_fields__' . $view->id();
+  $suggestions[] = 'views_view_fields__' . $view->id() . '__' . $display_id;
+}

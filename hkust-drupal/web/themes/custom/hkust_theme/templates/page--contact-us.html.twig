@@ -1,0 +1,73 @@
+{#
+/**
+ * @file
+ * Theme override for Contact Us page.
+ */
+#}
+
+{# Include CSS directly in template #}
+{{ attach_library('hkust_theme/contact_us_page') }}
+
+{# Include the standard header #}
+<header role="banner">
+  {# --- TOP BLUE BAR --- #}
+  <div class="top-bar" style="height: 14px;"></div>
+
+  {# --- MAIN NAVBAR --- #}
+  <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3">
+    <div class="container d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center">
+        <a class="navbar-brand d-flex align-items-center" href="https://hkust.edu.hk/">
+          <img src="{{ base_path ~ directory }}/images/hkust-logo-s.jpg" alt="HKUST Logo" class="img-fluid logo-img" />
+        </a>
+        <span class="line-1">Science, Environment and Society Project</span>
+      </div>
+
+      {# --- BURGER MENU FOR MOBILE --- #}
+      <button class="navbar-toggler" type="button"
+              data-toggle="collapse"
+              data-target="#mainMenu"
+              aria-controls="mainMenu"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      {# --- MAIN NAVIGATION MENU (RENDERED HTML FROM DRUPAL) --- #}
+      <div class="collapse navbar-collapse justify-content-end" id="mainMenu">
+        <nav class="region-primary-menu">
+          {{ page.primary_menu }}
+        </nav>
+      </div>
+    </div>
+  </nav>
+
+  {% if page.hero %}
+    {{ page.hero }}
+  {% endif %}
+</header>
+
+<main role="main" class="page-contact-us">
+  <div class="container">
+    <div class="contact-us-container">
+      <h1 class="contact-us-title text-center">Contact Us</h1>
+      
+      {% if page.content %}
+        <div class="contact-us-content">
+          {{ page.content }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</main>
+
+{% if page.footer %}
+  <footer role="contentinfo">
+    <div class="container">
+      {{ page.footer }}
+    </div>
+  </footer>
+{% else %}
+  {# Use the namespace prefix to correctly locate the template #}
+  {% include '@hkust_theme/footer.html.twig' %}
+{% endif %}

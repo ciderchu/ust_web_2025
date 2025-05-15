@@ -1,0 +1,12 @@
+{#
+/**
+ * @file
+ * Theme override for the Events Page unformatted rows.
+ */
+#}
+
+{% for row in rows %}
+  <div class="event-item">
+    {{ row.content }}
+  </div>
+{% endfor %}

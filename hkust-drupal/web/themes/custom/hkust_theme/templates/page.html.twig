@@ -1,0 +1,55 @@
+{# Attach footer styles early #}
+{{ attach_library('hkust_theme/footer') }}
+
+<header role="banner">
+  <div class="top-bar"></div>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3 sticky-top">
+  <div class="container d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <a class="navbar-brand d-flex align-items-center" href="https://hkust.edu.hk/">
+        <img src="{{ base_path ~ directory }}/images/hkust-logo-s.jpg" alt="HKUST Logo" class="img-fluid logo-img" />
+      </a>
+      <span class="line-1">Science, Environment and Society Project</span>
+    </div>
+
+    <button class="navbar-toggler" type="button"
+            data-toggle="collapse"
+            data-target="#mainMenu"
+            aria-controls="mainMenu"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="mainMenu">
+      <nav class="region-primary-menu">
+        {{ page.primary_menu }}
+      </nav>
+    </div>
+  </div>
+</nav>
+
+  {% if page.hero %}
+    {{ page.hero }}
+  {% endif %}
+</header>
+
+<main role="main">
+  <div class="container">
+    {% if page.content %}
+      {{ page.content }}
+    {% endif %}
+  </div>
+</main>
+
+{% if page.footer %}
+  <footer role="contentinfo">
+    <div class="container">
+      {{ page.footer }}
+    </div>
+  </footer>
+{% else %}
+  {# Use the namespace prefix to correctly locate the template #}
+  {% include '@hkust_theme/footer.html.twig' %}
+{% endif %}

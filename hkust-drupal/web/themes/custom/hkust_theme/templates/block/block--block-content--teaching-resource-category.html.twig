@@ -1,0 +1,43 @@
+{#
+/**
+ * @file
+ * Theme override to display Teaching Resource Category blocks.
+ */
+#}
+<div{{ attributes.addClass('resource-category-section', 'mb-4') }}>
+  <div class="container">
+    <div class="resource-category">
+      <div class="category-header" data-toggle="collapse" data-target="#category-{{ block_id }}" aria-expanded="false" aria-controls="category-{{ block_id }}">
+        <h3 class="category-title">{{ content.field_category_title|without('field_label') }}</h3>
+        <div class="category-toggle">
+          <i class="fas fa-chevron-down"></i>
+        </div>
+      </div>
+      <div class="collapse category-content" id="category-{{ block_id }}">
+        <div class="category-content-inner">
+          <div class="download-all-container">
+            <a href="#" class="btn btn-download-all">Download All <i class="fas fa-download"></i></a>
+          </div>
+          <div class="resources-list">
+            {% if content.field_resource_files[0] %}
+              {# If using Media references #}
+              {% for key, item in content.field_resource_files %}
+                {% if key|first != '#' %}
+                  <div class="resource-item">
+                    <span class="resource-title">{{ item['#media'].name.value }}</span>
+                    <a href="{{ file_url(item['#media'].field_media_file.entity.uri.value) }}" class="resource-download-link" target="_blank">
+                      <i class="fas fa-download"></i>
+                    </a>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            {% else %}
+              {# If using HTML content field #}
+              {{ content.field_resources_list|without('field_label') }}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

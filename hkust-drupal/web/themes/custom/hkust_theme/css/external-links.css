@@ -1,0 +1,102 @@
+/* External Links page styling */
+
+main,
+.main-content,
+.region-content,
+.page-external-links main {
+  margin-top: 50px;
+  margin-bottom: 80px;
+  min-height: 620px;
+}
+
+.page-external-links .main-content {
+    padding: 2rem 0;
+  }
+  
+  /* Main title styling */
+  .external-links-title {
+    color: #C00404; /* Red color matching your theme's accent color */
+    font-weight: bold;
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+    text-align: center;
+  }
+  
+  /* Container styling */
+  .external-links-list {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Section headers - dark blue like in the theme */
+  .external-links-list h3 {
+    color: #003366;
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #f0f0f0;
+  }
+  
+  /* First section header needs less top margin */
+  .external-links-list h3:first-of-type {
+    margin-top: 1rem;
+  }
+  
+  /* List styling */
+  .external-links-list ul {
+    padding-left: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .external-links-list li {
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+  }
+  
+  /* Link styling */
+  .external-links-list a {
+    color: #003366; /* Blue color from your theme */
+    text-decoration: none;
+    transition: color 0.3s, transform 0.2s;
+    display: inline-block;
+    padding: 0.25rem 0;
+  }
+  
+  .external-links-list a:hover {
+    color: #C00404; /* Red on hover */
+    transform: translateX(3px);
+  }
+  
+  /* External link icon */
+  .external-links-list a::after {
+    content: "↗";
+    margin-left: 0.25rem;
+    font-size: 0.9em;
+    display: inline-block;
+    transition: transform 0.2s;
+  }
+  
+  .external-links-list a:hover::after {
+    transform: translateY(-2px);
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 767px) {
+    .external-links-title {
+      font-size: 2rem;
+    }
+    
+    .external-links-list {
+      padding: 1rem;
+    }
+    
+    .external-links-list h3 {
+      font-size: 1.3rem;
+    }
+  }

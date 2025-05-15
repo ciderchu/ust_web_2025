@@ -1,0 +1,136 @@
+<?php
+
+/**
+ * @file
+ * Contains teaching_resources_setup.module.
+ */
+
+use Drupal\block\Entity\Block;
+use Drupal\block_content\Entity\BlockContent;
+
+/**
+ * Implements hook_block_view_alter().
+ * 
+ * Ensures block content changes are reflected on the frontend.
+ */
+function teaching_resources_setup_block_view_alter(array &$build, \Drupal\Core\Block\BlockPluginInterface $block) {
+  // Only process blocks from our custom block types
+  if (isset($build['#base_plugin_id']) && $build['#base_plugin_id'] === 'block_content') {
+    if (isset($build['content']['#block_content'])) {
+      // Check if this is one of our block types
+      $bundle = $build['content']['#block_content']->bundle();
+      if ($bundle === 'teaching_resource_category' || $bundle === 'teaching_resources_main') {
+        // Add a cache tag specific to the block content entity
+        $build['#cache']['tags'][] = 'block_content:' . $build['content']['#block_content']->id();
+        // Add a max-age of 0 for development to disable caching
+        // Remove this line in production
+        $build['#cache']['max-age'] = 0;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_block().
+ */
+function teaching_resources_setup_preprocess_block(&$variables) {
+  // For teaching resource category blocks, add a unique ID for collapse functionality
+  if (isset($variables['elements']['content']['#block_content']) && 
+      $variables['elements']['content']['#block_content']->bundle() == 'teaching_resource_category') {
+    // Create a unique ID from the block ID
+    $block_id = $variables['elements']['#id'];
+    $variables['block_id'] = preg_replace('/[^a-z0-9]/', '_', strtolower($block_id));
+  }
+}
+
+/**
+ * Helper function to refresh all teaching resource blocks.
+ * 
+ * Call this function if you need to force a rebuild of the blocks.
+ */
+function teaching_resources_setup_refresh_blocks() {
+  // Clear render cache
+  \Drupal::service('cache.render')->invalidateAll();
+  
+  // Get all teaching resource blocks
+  $storage = \Drupal::entityTypeManager()->getStorage('block_content');
+  $query = $storage->getQuery()
+    ->condition('type', 'teaching_resource_category');
+  $block_content_ids = $query->execute();
+  
+  if (!empty($block_content_ids)) {
+    // Touch blocks to trigger cache invalidation
+    $blocks = $storage->loadMultiple($block_content_ids);
+    foreach ($blocks as $block) {
+      $block->save();
+    }
+  }
+  
+  return count($block_content_ids);
+}
+
+/**
+ * Helper function to create/update resource HTML based on an array of resources.
+ *
+ * @param array $resources
+ *   Array of resource titles.
+ * @param string $file_path
+ *   Base file path for PDFs (defaults to /sites/default/files/teaching_resources/).
+ *
+ * @return string
+ *   HTML for the resources list.
+ */
+function teaching_resources_setup_generate_resources_html(array $resources, $file_path = '/sites/default/files/teaching_resources/') {
+  $resources_html = '';
+  foreach ($resources as $resource) {
+    $file_name = strtolower(str_replace(' ', '_', $resource)) . '.pdf';
+    $resources_html .= '<div class="resource-item">
+      <span class="resource-title">' . $resource . '</span>
+      <a href="' . $file_path . $file_name . '" class="resource-download-link"><i class="fas fa-download"></i></a>
+    </div>';
+  }
+  return $resources_html;
+}
+
+/**
+ * Helper function to update a teaching resource category block.
+ *
+ * @param string $title
+ *   The category title.
+ * @param array|string $resources
+ *   Array of resource titles or HTML string for resources.
+ *
+ * @return \Drupal\block_content\Entity\BlockContent|null
+ *   The updated block content entity or NULL if not found.
+ */
+function teaching_resources_setup_update_category_block($title, $resources) {
+  // Find the block with this title
+  $storage = \Drupal::entityTypeManager()->getStorage('block_content');
+  $query = $storage->getQuery()
+    ->condition('type', 'teaching_resource_category')
+    ->condition('info', $title . ' Resources');
+  $block_ids = $query->execute();
+  
+  if (!empty($block_ids)) {
+    $block = $storage->load(reset($block_ids));
+    
+    // Generate resources HTML if an array was provided
+    $resources_html = is_array($resources) 
+      ? teaching_resources_setup_generate_resources_html($resources)
+      : $resources;
+    
+    // Update the block content
+    $block->set('field_resources_list', [
+      'value' => $resources_html,
+      'format' => 'full_html',
+    ]);
+    $block->save();
+    
+    // Force cache rebuild
+    \Drupal::service('cache.render')->invalidateAll();
+    
+    return $block;
+  }
+  
+  return NULL;
+}

@@ -1,0 +1,41 @@
+{#
+/**
+ * @file
+ * Theme override for the Homepage Events view.
+ */
+#}
+
+<div class="events-section-wrapper">
+  <div class="container">
+    <div class="events-header section-head d-flex flex-row justify-content-between align-items-end">
+      <h2 class="events-title">Latest Events</h2>
+      <a href="/events" class="view-all-link">VIEW ALL</a>
+    </div>
+
+    <div class="events-swiper-container">
+      {% if rows %}
+        <div class="swiper events-swiper">
+          <div class="swiper-wrapper">
+            {{ rows }}
+          </div>
+        </div>
+        <div class="events-nav-prev"><i class="fas fa-chevron-left"></i></div>
+        <div class="events-nav-next"><i class="fas fa-chevron-right"></i></div>
+      {% else %}
+        <div class="no-events-message">
+          <p>No upcoming events at this time.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="funded-by-section text-center my-5">
+  <div class = "organisation-name">
+     <img src="/themes/custom/hkust_theme/images/IENV_ENVR_logo.png" alt="IENV Logo" class="funded-by-logo funded-by-inev" style="max-height: 165px;"/>
+  </div>
+  <div class = "funded-by-sponsor">
+    <p class="funded-by-label">Funded By:</p>
+    <img src="/themes/custom/hkust_theme/images/logo_qef.svg" alt="QEF Logo" class="funded-by-logo" />
+  </div>   
+</div>

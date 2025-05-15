@@ -1,0 +1,146 @@
+/* Contact Us page styling with normal specificity */
+
+/* Basic page setup */
+
+main,
+.main-content,
+.region-content,
+.page-external-links main {
+  margin-top: 50px;
+  margin-bottom: 80px;
+  min-height: 620px;
+}
+
+  /* Title styling */
+  .contact-us-title {
+    color: #C00404;
+    text-align: center;
+    font-weight: bold;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  /* Content layout */
+  .contact-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: flex-start;
+    margin-top: 3rem;
+    min-height: 520px;
+  }
+  
+  /* Image styling */
+  .contact-image {
+    flex: 0 0 550px;
+    max-width: 550px;
+  }
+  
+  .contact-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
+  }
+  
+  /* Content area */
+  .contact-details {
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  /* Gold institute name */
+  .institute-name {
+    color: #9C885B;
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 0.75rem;
+  }
+  
+  /* Contact lines */
+  .contact-line {
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Link styling */
+  .contact-details a {
+    color: #0066CC;
+    text-decoration: none;
+  }
+  
+  .contact-details a:hover {
+    color: #C00404;
+    text-decoration: underline;
+  }
+  
+  /* Medium screen adjustments */
+  @media (max-width: 992px) and (min-width: 769px) {
+    .contact-image {
+      flex: 0 0 400px;
+      max-width: 400px;
+    }
+  }
+  
+  /* Specific fix for around 766px */
+  @media (max-width: 800px) and (min-width: 700px) {
+    .contact-layout {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .contact-image {
+      width: 100%;
+      max-width: 100%;
+      flex: 0 0 100%;
+      margin-bottom: 1rem;
+    }
+    
+    .contact-image img {
+      max-height: 350px;
+      width: 100%;
+    }
+    
+    .contact-details {
+      margin-top: 1rem;
+    }
+  }
+  
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
+    .contact-layout {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .contact-image, 
+    .contact-details {
+      width: 100%;
+      max-width: 100%;
+      flex: 0 0 100%;
+    }
+    
+    .contact-image {
+      margin-bottom: 1rem;
+    }
+    
+    .contact-image img {
+      max-height: 300px;
+      object-fit: cover;
+      width: 100%;
+    }
+    
+    .contact-details {
+      margin-top: 0.5rem;
+    }
+    
+    .contact-us-title {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .page-contact-us {
+      margin-top: 30px;
+      margin-bottom: 50px;
+    }
+  }

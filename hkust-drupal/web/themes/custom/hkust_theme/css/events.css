@@ -1,0 +1,175 @@
+/* Events List Page Styles */
+.events-page-wrapper {
+    padding: 3rem 0;
+    width: 100%;
+  }
+  
+  .events-page-header {
+    margin-bottom: 2.5rem;
+  }
+  
+  .events-page-title {
+    color: #C00404; /* HKUST red color */
+    font-weight: bold;
+    font-size: 2.5rem;
+    text-align: center;
+  }
+  
+  /* Grid layout for event cards */
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    width: 100%;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 992px) {
+    .events-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .events-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .events-page-title {
+      font-size: 2rem;
+    }
+  }
+  
+  /* Event card styling (similar to your homepage but without carousel specifics) */
+  .event-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    background: white;
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .event-card .event-image img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    object-position: center;
+  }
+  
+  .event-info {
+    padding: 1.5rem;
+    flex: 1;
+  }
+  
+  .event-info h4 {
+    color: #003366; /* HKUST blue */
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+  }
+  
+  .event-info .subtitle {
+    color: #666;
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+  
+  .event-info .event-date,
+  .event-info .event-time,
+  .event-info .event-venue {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
+  
+  .event-detail-link {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #003366;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white !important;
+    transition: background 0.3s;
+  }
+  
+  .event-detail-link:hover {
+    background: #C00404;
+    color: white !important;
+    text-decoration: none;
+  }
+  
+  /* Empty results message */
+  .no-events-message {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.1rem;
+    color: #666;
+  }
+  
+  /* Filtering */
+  .events-filters {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+  }
+  
+  .events-filters-title {
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #003366;
+  }
+  
+  /* Pagination */
+  .events-pagination {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .pagination .page-item .page-link {
+    color: #003366;
+  }
+  
+  .pagination .page-item.active .page-link {
+    background-color: #003366;
+    border-color: #003366;
+  }
+  
+  .pagination .page-item .page-link:hover {
+    color: #C00404;
+  }
+  
+  /* Funded by section - for consistency with homepage */
+  .funded-by-section {
+    padding: 2rem 0;
+    background-color: #ffffff;
+    margin-top: 3rem;
+  }
+  
+  .funded-by-label {
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: #003366;
+    margin-bottom: 1rem;
+  }
+  
+  .funded-by-logo {
+    max-height: 80px;
+    width: auto;
+    object-fit: contain;
+  }

@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * @file
+ * Contains hero_banner.module.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function hero_banner_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  // Check if this is a paragraph entity of type banner_slider
+  if ($entity->getEntityTypeId() == 'paragraph' && $entity->bundle() == 'banner_slider') {
+    // Remove any duplicate rendered elements
+    if (isset($build['field_banner_slider'])) {
+      // Remove the #theme_wrappers from the field to prevent extra markup
+      unset($build['field_banner_slider']['#theme_wrappers']);
+    }
+    
+    // Ensure image field doesn't have extra wrappers
+    if (isset($build['field_image'])) {
+      // Keep the basic field structure but remove extra wrappers
+      $build['field_image']['#label_display'] = 'hidden';
+      
+      // If there's a theme wrapper for the entire field, preserve the items but remove the wrapper
+      if (isset($build['field_image']['#theme_wrappers'])) {
+        unset($build['field_image']['#theme_wrappers']);
+      }
+    }
+    
+    // Remove "Submitted by" information
+    if (isset($build['user_id'])) {
+      unset($build['user_id']);
+    }
+    
+    // Ensure the library is attached
+    $build['#attached']['library'][] = 'hkust_theme/global';
+  }
+}

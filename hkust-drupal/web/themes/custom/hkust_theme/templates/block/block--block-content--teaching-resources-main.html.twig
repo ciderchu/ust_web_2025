@@ -1,0 +1,22 @@
+{#
+/**
+ * @file
+ * Theme override to display the Teaching Resources Main block.
+ */
+#}
+<div{{ attributes.addClass('teaching-resources-section', 'py-5') }}>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        {% if content.field_teaching_resources_title %}
+          <h2 class="teaching-resources-title mb-4">
+            {{ content.field_teaching_resources_title|without('field_label') }}
+          </h2>
+        {% endif %}
+        <div class="teaching-resources-paragraph">
+          {{ content.field_teaching_resources_content|without('field_label') }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

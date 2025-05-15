@@ -1,0 +1,42 @@
+{#
+/**
+ * @file
+ * Theme override for the Events Page fields.
+ */
+#}
+
+<div class="event-card">
+  {% if fields.field_thumbnail %}
+    <div class="event-image">
+      {{ fields.field_thumbnail.content }}
+    </div>
+  {% endif %}
+  
+  <div class="event-info">
+    {% if fields.field_event_title %}
+      <h4>{{ fields.field_event_title.content }}</h4>
+    {% endif %}
+    
+    {% if fields.field_subtitle %}
+      <p class="subtitle">{{ fields.field_subtitle.content }}</p>
+    {% endif %}
+    
+    {% if fields.field_date %}
+      <p class="event-date"><strong>Date:</strong> {{ fields.field_date.content }}</p>
+    {% endif %}
+    
+    {% if fields.field_time %}
+      <p class="event-time"><strong>Time:</strong> {{ fields.field_time.content }}</p>
+    {% endif %}
+    
+    {% if fields.field_venue %}
+      <p class="event-venue"><strong>Venue:</strong> {{ fields.field_venue.content }}</p>
+    {% endif %}
+  </div>
+  
+  {% if fields.nid %}
+    <a href="{{ path('entity.node.canonical', {'node': fields.nid.content|striptags|trim}) }}" class="event-detail-link">
+      <i class="fas fa-chevron-right"></i>
+    </a>
+  {% endif %}
+</div>

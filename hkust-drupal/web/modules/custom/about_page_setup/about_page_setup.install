@@ -1,0 +1,138 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for About Page Setup module.
+ */
+
+use Drupal\block_content\Entity\BlockContent;
+use Drupal\block\Entity\Block;
+
+/**
+ * Implements hook_install().
+ */
+function about_page_setup_install() {
+  // Create About SES Main block
+  $about_ses_main = BlockContent::create([
+    'type' => 'about_ses_main',
+    'info' => 'About SES Main Content',
+    'field_about_ses_title' => 'About SES',
+    'field_about_ses_content' => [
+      'value' => '<p>The <strong>Science, Environment and Society (SES)</strong> framework is designed to transform junior secondary education by fostering a curiosity-driven, interdisciplinary approach to learning. This framework aims to address a critical challenge in our modern education system - the lack of a systematic approach to nurturing students\' ability to integrate knowledge and work across different disciplines.</p>
+      <p>Driven by natural human curiosity, the SES framework traces the origins and evolution of our world, from the Big Bang to the present day. It recognizes that many of the problems we face in the 21st century often require the integration of expertise from various fields, rather than a siloed, single-discipline approach.</p>
+      <p>The main idea of SES is that a holistic understanding of the world we live in is essential for tackling complex, interdisciplinary challenges. By exploring the connections between scientific principles, environmental issues, and societal effects, the framework enables students to:</p>',
+      'format' => 'full_html',
+    ],
+  ]);
+  $about_ses_main->save();
+
+  // Create Curiosity-driven Learning block
+  $curiosity_block = BlockContent::create([
+    'type' => 'feature_section',
+    'info' => 'Curiosity-driven Learning Section',
+    'field_feature_title' => 'Curiosity-driven Learning',
+    'field_feature_content' => [
+      'value' => '<p>At the heart of the SES framework is the belief that curiosity is a powerful catalyst for learning. During their formative years, students naturally ask profound questions about the origins of mankind, the biosphere, and the universe. However, traditional educational structures often compartmentalize knowledge, which can stifle this innate curiosity. The SES framework aims to break down these barriers by providing a holistic perspective that connects scientific concepts with environmental and societal issues.</p>',
+      'format' => 'full_html',
+    ],
+    'field_layout_type' => 'image_right',
+  ]);
+  $curiosity_block->save();
+
+  // Create Cross-disciplinary Integration block
+  $cross_disciplinary_block = BlockContent::create([
+    'type' => 'feature_section',
+    'info' => 'Cross-disciplinary Integration Section',
+    'field_feature_title' => 'Cross-disciplinary Integration',
+    'field_feature_content' => [
+      'value' => '<p>Many of the pressing problems we encounter today—such as climate change, resource management, and public health—demand collaborative solutions that draw on insights from multiple disciplines. The SES framework addresses the current curriculum\'s shortcomings by nurturing students\' skills in knowledge integration and interdisciplinary collaboration.</p>',
+      'format' => 'full_html',
+    ],
+    'field_layout_type' => 'image_left',
+  ]);
+  $cross_disciplinary_block->save();
+
+  // Create Holistic Understanding block
+  $holistic_block = BlockContent::create([
+    'type' => 'feature_section',
+    'info' => 'Holistic Understanding Section',
+    'field_feature_title' => 'A Holistic Understanding',
+    'field_feature_content' => [
+      'value' => '<p>The SES initiative offers a comprehensive narrative that spans from the Big Bang to contemporary challenges, utilizing the latest scientific evidence and cross-disciplinary insights. This macroscopic perspective encourages students to explore beyond conventional subject boundaries, inspiring them to ask deeper questions and pursue their interests with enthusiasm. The goal is to cultivate a generation of learners who are not only knowledgeable but also innovative thinkers and proactive problem solvers.</p><p>By implementing the SES framework in junior secondary education, this project aims to rejuvenate science and STEM learning. It also encourage proactive and positive thinking in potential sustainability solutions.</p>',
+      'format' => 'full_html',
+    ],
+    'field_layout_type' => 'image_right',
+  ]);
+  $holistic_block->save();
+
+  // Place the blocks programmatically
+  $blocks = [
+    'about_ses_main' => [
+      'id' => 'aboutsesmain',
+      'region' => 'content',
+      'weight' => 0,
+      'uuid' => $about_ses_main->uuid(),
+    ],
+    'curiosity_section' => [
+      'id' => 'curiositysection',
+      'region' => 'content',
+      'weight' => 1,
+      'uuid' => $curiosity_block->uuid(),
+    ],
+    'cross_disciplinary' => [
+      'id' => 'crossdisciplinary',
+      'region' => 'content',
+      'weight' => 2,
+      'uuid' => $cross_disciplinary_block->uuid(),
+    ],
+    'holistic_understanding' => [
+      'id' => 'holisticunderstanding',
+      'region' => 'content',
+      'weight' => 3,
+      'uuid' => $holistic_block->uuid(),
+    ],
+  ];
+
+  foreach ($blocks as $key => $block_info) {
+    Block::create([
+      'id' => $block_info['id'],
+      'theme' => 'hkust_theme',
+      'region' => $block_info['region'],
+      'weight' => $block_info['weight'],
+      'plugin' => 'block_content:' . $block_info['uuid'],
+      'settings' => [
+        'id' => 'block_content:' . $block_info['uuid'],
+        'label' => '',
+        'label_display' => FALSE,
+      ],
+      'visibility' => [
+        'request_path' => [
+          'id' => 'request_path',
+          'pages' => '/about',
+          'negate' => FALSE,
+          'context_mapping' => [],
+        ],
+      ],
+    ])->save();
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function about_page_setup_uninstall() {
+  // Remove the blocks when module is uninstalled
+  $block_ids = [
+    'aboutsesmain',
+    'curiositysection',
+    'crossdisciplinary',
+    'holisticunderstanding',
+  ];
+
+  foreach ($block_ids as $block_id) {
+    $block = Block::load($block_id);
+    if ($block) {
+      $block->delete();
+    }
+  }
+}

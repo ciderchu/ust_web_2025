@@ -1,0 +1,646 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for Teaching Resources Setup module.
+ */
+
+use Drupal\block_content\Entity\BlockContent;
+use Drupal\block_content\Entity\BlockContentType;
+use Drupal\block\Entity\Block;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\Core\Entity\Entity\EntityViewDisplay;
+
+/**
+ * Implements hook_install().
+ */
+function teaching_resources_setup_install() {
+  // Set up logging
+  $logger = \Drupal::logger('teaching_resources_setup');
+  $logger->notice('Starting installation of Teaching Resources Setup module');
+
+  try {
+    // Create required block content types if they don't exist
+    $block_content_type_storage = \Drupal::entityTypeManager()->getStorage('block_content_type');
+
+    // Check for teaching_resources_main type
+    $teaching_resources_main_type = $block_content_type_storage->load('teaching_resources_main');
+    if (!$teaching_resources_main_type) {
+      $logger->notice('Creating Teaching Resources Main block type');
+      $teaching_resources_main_type = BlockContentType::create([
+        'id' => 'teaching_resources_main',
+        'label' => 'Teaching Resources Main',
+        'description' => 'Main content block for Teaching Resources page',
+      ]);
+      $teaching_resources_main_type->save();
+      \Drupal::messenger()->addStatus(t('Created Teaching Resources Main block type.'));
+    }
+
+    // Check for teaching_resource_category type
+    $teaching_resource_category_type = $block_content_type_storage->load('teaching_resource_category');
+    if (!$teaching_resource_category_type) {
+      $logger->notice('Creating Teaching Resource Category block type');
+      $teaching_resource_category_type = BlockContentType::create([
+        'id' => 'teaching_resource_category',
+        'label' => 'Teaching Resource Category',
+        'description' => 'Category section for Teaching Resources page',
+      ]);
+      $teaching_resource_category_type->save();
+      \Drupal::messenger()->addStatus(t('Created Teaching Resource Category block type.'));
+    }
+
+    // Add required fields if they don't exist
+    _teaching_resources_setup_create_fields();
+
+    // Create Teaching Resources Main block
+    $logger->notice('Creating Teaching Resources Main block');
+    $teaching_resources_main = BlockContent::create([
+      'type' => 'teaching_resources_main',
+      'info' => 'Teaching Resources Main Content',
+      'field_teaching_resources_title' => 'Teaching Resources',
+      'field_teaching_resources_content' => [
+        'value' => '<p>The Science, Environment and Society (SES) framework provides comprehensive teaching materials designed to transform junior secondary education. Our resources are developed to support educators in implementing the interdisciplinary approach that connects scientific principles with environmental issues and societal impacts.</p>
+        <p>These teaching materials follow a curiosity-driven methodology that helps students explore the origins and evolution of our world, enabling them to integrate knowledge across different disciplines. The resources below can be adapted to suit your specific classroom needs.</p>',
+        'format' => 'full_html',
+      ],
+    ]);
+    $teaching_resources_main->save();
+    $logger->notice('Created Teaching Resources Main block with ID: @id, UUID: @uuid', [
+      '@id' => $teaching_resources_main->id(),
+      '@uuid' => $teaching_resources_main->uuid(),
+    ]);
+
+    // Define actual block HTML content for each unit
+    $custom_blocks = [
+      'unit_1_science' => <<<EOD
+<div class="resource-item">
+  <span class="resource-title">Origin Story and Big Bang</span>
+  <a href="/sites/default/files/2025-05/00%20Origin%20Story%20and%20Big%20Bang.pdf" class="resource-download-link">
+    <i class="fas fa-download"></i>
+  </a>
+</div>
+<div class="resource-item">
+  <span class="resource-title">Star Formation</span>
+  <a href="/sites/default/files/2025-05/01%20Star%20Formation.pdf" class="resource-download-link">
+    <i class="fas fa-download"></i>
+  </a>
+</div>
+<div class="resource-item">
+  <span class="resource-title">Solar System</span>
+  <a href="/sites/default/files/2025-05/02%20Solar%20System.pdf" class="resource-download-link">
+    <i class="fas fa-download"></i>
+  </a>
+</div>
+<div class="resource-item">
+  <span class="resource-title">Earth</span>
+  <a href="/sites/default/files/2025-05/03%20Earth.pdf" class="resource-download-link">
+    <i class="fas fa-download"></i>
+  </a>
+</div>
+<div class="resource-item">
+  <span class="resource-title">Summary of Module 1</span>
+  <a href="/sites/default/files/2025-05/04%20Summary%20of%20Module%201.pdf" class="resource-download-link">
+    <i class="fas fa-download"></i>
+  </a>
+</div>
+<div class="resource-item">
+  <span class="resource-title">Life</span>
+  <a href="/sites/default/files/2025-05/05%20Life.pdf" class="resource-download-link">
+    <i class="fas fa-download"></i>
+  </a>
+</div>
+EOD,
+
+      'unit_2_environment' => <<<EOD
+<div class="resource-item">
+  <span class="resource-title">Evolution</span>
+  <a href="/sites/default/files/2025-05/06%20Evolution.pdf" class="resource-download-link">
+    <i class="fas fa-download"></i>
+  </a>
+</div>
+<div class="resource-item">
+  <span class="resource-title">Adaptation and Extinction</span>
+  <a href="/sites/default/files/2025-05/07%20Adaptation%20and%20Extinction.pdf" class="resource-download-link">
+    <i class="fas fa-download"></i>
+  </a>
+</div>
+EOD,
+
+      'unit_3_society' => <<<EOD
+<div class="resource-item">
+  <span class="resource-title">Human</span>
+  <a href="/sites/default/files/2025-05/08%20Human.pdf" class="resource-download-link">
+    <i class="fas fa-download"></i>
+  </a>
+</div>
+<div class="resource-item">
+  <span class="resource-title">Introduction to human society</span>
+  <a href="/sites/default/files/2025-05/09%20Introduction%20to%20human%20society.pdf" class="resource-download-link">
+    <i class="fas fa-download"></i>
+  </a>
+</div>
+EOD,
+    ];
+
+    // Define category information
+    $categories = [
+      [
+        'title' => 'Unit 1: Science',
+        'machine_name' => 'unit_1_science',
+      ],
+      [
+        'title' => 'Unit 2: Environment',
+        'machine_name' => 'unit_2_environment',
+      ],
+      [
+        'title' => 'Unit 3: Society',
+        'machine_name' => 'unit_3_society',
+      ],
+    ];
+
+    // Create blocks for each category
+    $block_ids = [];
+    $weight = 1;
+
+    foreach ($categories as $category) {
+      $logger->notice('Creating block for category: @title', [
+        '@title' => $category['title'],
+      ]);
+      
+      $resources_html = $custom_blocks[$category['machine_name']];
+
+      $block = BlockContent::create([
+        'type' => 'teaching_resource_category',
+        'info' => $category['title'] . ' Resources',
+        'field_category_title' => $category['title'],
+        'field_resources_list' => [
+          'value' => $resources_html,
+          'format' => 'full_html',
+        ],
+      ]);
+      $block->save();
+      
+      $logger->notice('Created block: @title with ID: @id, UUID: @uuid', [
+        '@title' => $block->label(),
+        '@id' => $block->id(),
+        '@uuid' => $block->uuid(),
+      ]);
+
+      $block_ids[$category['machine_name']] = [
+        'id' => 'teaching_' . $category['machine_name'],
+        'region' => 'content',
+        'weight' => $weight,
+        'uuid' => $block->uuid(),
+      ];
+      $weight++;
+    }
+
+    // Place main content block
+    $logger->notice('Placing Teaching Resources Main block in the content region');
+    Block::create([
+      'id' => 'teachingresourcesmain',
+      'theme' => 'hkust_theme',
+      'region' => 'content',
+      'weight' => 0,
+      'plugin' => 'block_content:' . $teaching_resources_main->uuid(),
+      'settings' => [
+        'id' => 'block_content:' . $teaching_resources_main->uuid(),
+        'label' => '',
+        'label_display' => FALSE,
+      ],
+      'visibility' => [
+        'request_path' => [
+          'id' => 'request_path',
+          'pages' => '/teaching-resources',
+          'negate' => FALSE,
+          'context_mapping' => [],
+        ],
+      ],
+    ])->save();
+
+    // Place each unit block
+    foreach ($block_ids as $key => $block_info) {
+      $logger->notice('Placing block @id in the content region', [
+        '@id' => $block_info['id'],
+      ]);
+      
+      Block::create([
+        'id' => $block_info['id'],
+        'theme' => 'hkust_theme',
+        'region' => 'content',
+        'weight' => $block_info['weight'],
+        'plugin' => 'block_content:' . $block_info['uuid'],
+        'settings' => [
+          'id' => 'block_content:' . $block_info['uuid'],
+          'label' => '',
+          'label_display' => FALSE,
+        ],
+        'visibility' => [
+          'request_path' => [
+            'id' => 'request_path',
+            'pages' => '/teaching-resources',
+            'negate' => FALSE,
+            'context_mapping' => [],
+          ],
+        ],
+      ])->save();
+    }
+    
+    // Final status message
+    \Drupal::messenger()->addStatus(t('Teaching Resources blocks have been created successfully.'));
+    $logger->notice('Teaching Resources Setup installation completed successfully');
+  }
+  catch (\Exception $e) {
+    $logger->error('Error during Teaching Resources Setup installation: @error', [
+      '@error' => $e->getMessage(),
+    ]);
+    \Drupal::messenger()->addError(t('Error creating Teaching Resources blocks: @error', [
+      '@error' => $e->getMessage(),
+    ]));
+  }
+}
+
+/**
+ * Helper function to create required fields.
+ */
+function _teaching_resources_setup_create_fields() {
+  $logger = \Drupal::logger('teaching_resources_setup');
+  
+  try {
+    // Create fields for teaching_resources_main
+    if (!FieldStorageConfig::loadByName('block_content', 'field_teaching_resources_title')) {
+      $logger->notice('Creating field_teaching_resources_title');
+      
+      // Create field storage
+      $field_storage = FieldStorageConfig::create([
+        'field_name' => 'field_teaching_resources_title',
+        'entity_type' => 'block_content',
+        'type' => 'string',
+      ]);
+      $field_storage->save();
+      
+      // Create field instance
+      $field = FieldConfig::create([
+        'field_storage' => $field_storage,
+        'bundle' => 'teaching_resources_main',
+        'label' => 'Title',
+      ]);
+      $field->save();
+      
+      // Set up form display
+      $form_display = EntityFormDisplay::load('block_content.teaching_resources_main.default');
+      if (!$form_display) {
+        $form_display = EntityFormDisplay::create([
+          'targetEntityType' => 'block_content',
+          'bundle' => 'teaching_resources_main',
+          'mode' => 'default',
+          'status' => TRUE,
+        ]);
+      }
+      $form_display->setComponent('field_teaching_resources_title', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])->save();
+      
+      // Set up view display
+      $view_display = EntityViewDisplay::load('block_content.teaching_resources_main.default');
+      if (!$view_display) {
+        $view_display = EntityViewDisplay::create([
+          'targetEntityType' => 'block_content',
+          'bundle' => 'teaching_resources_main',
+          'mode' => 'default',
+          'status' => TRUE,
+        ]);
+      }
+      $view_display->setComponent('field_teaching_resources_title', [
+        'type' => 'string',
+        'label' => 'hidden',
+        'weight' => 1,
+      ])->save();
+    }
+    
+    // Create field_teaching_resources_content
+    if (!FieldStorageConfig::loadByName('block_content', 'field_teaching_resources_content')) {
+      $logger->notice('Creating field_teaching_resources_content');
+      
+      // Create field storage
+      $field_storage = FieldStorageConfig::create([
+        'field_name' => 'field_teaching_resources_content',
+        'entity_type' => 'block_content',
+        'type' => 'text_long',
+      ]);
+      $field_storage->save();
+      
+      // Create field instance
+      $field = FieldConfig::create([
+        'field_storage' => $field_storage,
+        'bundle' => 'teaching_resources_main',
+        'label' => 'Content',
+      ]);
+      $field->save();
+      
+      // Set up form display
+      $form_display = EntityFormDisplay::load('block_content.teaching_resources_main.default');
+      if (!$form_display) {
+        $form_display = EntityFormDisplay::create([
+          'targetEntityType' => 'block_content',
+          'bundle' => 'teaching_resources_main',
+          'mode' => 'default',
+          'status' => TRUE,
+        ]);
+      }
+      $form_display->setComponent('field_teaching_resources_content', [
+        'type' => 'text_textarea',
+        'weight' => 2,
+      ])->save();
+      
+      // Set up view display
+      $view_display = EntityViewDisplay::load('block_content.teaching_resources_main.default');
+      if (!$view_display) {
+        $view_display = EntityViewDisplay::create([
+          'targetEntityType' => 'block_content',
+          'bundle' => 'teaching_resources_main',
+          'mode' => 'default',
+          'status' => TRUE,
+        ]);
+      }
+      $view_display->setComponent('field_teaching_resources_content', [
+        'type' => 'text_default',
+        'label' => 'hidden',
+        'weight' => 2,
+      ])->save();
+    }
+    
+    // Create fields for teaching_resource_category
+    if (!FieldStorageConfig::loadByName('block_content', 'field_category_title')) {
+      $logger->notice('Creating field_category_title');
+      
+      // Create field storage
+      $field_storage = FieldStorageConfig::create([
+        'field_name' => 'field_category_title',
+        'entity_type' => 'block_content',
+        'type' => 'string',
+      ]);
+      $field_storage->save();
+      
+      // Create field instance
+      $field = FieldConfig::create([
+        'field_storage' => $field_storage,
+        'bundle' => 'teaching_resource_category',
+        'label' => 'Category Title',
+      ]);
+      $field->save();
+      
+      // Set up form display
+      $form_display = EntityFormDisplay::load('block_content.teaching_resource_category.default');
+      if (!$form_display) {
+        $form_display = EntityFormDisplay::create([
+          'targetEntityType' => 'block_content',
+          'bundle' => 'teaching_resource_category',
+          'mode' => 'default',
+          'status' => TRUE,
+        ]);
+      }
+      $form_display->setComponent('field_category_title', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])->save();
+      
+      // Set up view display
+      $view_display = EntityViewDisplay::load('block_content.teaching_resource_category.default');
+      if (!$view_display) {
+        $view_display = EntityViewDisplay::create([
+          'targetEntityType' => 'block_content',
+          'bundle' => 'teaching_resource_category',
+          'mode' => 'default',
+          'status' => TRUE,
+        ]);
+      }
+      $view_display->setComponent('field_category_title', [
+        'type' => 'string',
+        'label' => 'hidden',
+        'weight' => 1,
+      ])->save();
+    }
+    
+    // Create field_resources_list
+    if (!FieldStorageConfig::loadByName('block_content', 'field_resources_list')) {
+      $logger->notice('Creating field_resources_list');
+      
+      // Create field storage
+      $field_storage = FieldStorageConfig::create([
+        'field_name' => 'field_resources_list',
+        'entity_type' => 'block_content',
+        'type' => 'text_long',
+      ]);
+      $field_storage->save();
+      
+      // Create field instance
+      $field = FieldConfig::create([
+        'field_storage' => $field_storage,
+        'bundle' => 'teaching_resource_category',
+        'label' => 'Resources List',
+      ]);
+      $field->save();
+      
+      // Set up form display
+      $form_display = EntityFormDisplay::load('block_content.teaching_resource_category.default');
+      if (!$form_display) {
+        $form_display = EntityFormDisplay::create([
+          'targetEntityType' => 'block_content',
+          'bundle' => 'teaching_resource_category',
+          'mode' => 'default',
+          'status' => TRUE,
+        ]);
+      }
+      $form_display->setComponent('field_resources_list', [
+        'type' => 'text_textarea',
+        'weight' => 2,
+      ])->save();
+      
+      // Set up view display
+      $view_display = EntityViewDisplay::load('block_content.teaching_resource_category.default');
+      if (!$view_display) {
+        $view_display = EntityViewDisplay::create([
+          'targetEntityType' => 'block_content',
+          'bundle' => 'teaching_resource_category',
+          'mode' => 'default',
+          'status' => TRUE,
+        ]);
+      }
+      $view_display->setComponent('field_resources_list', [
+        'type' => 'text_default',
+        'label' => 'hidden',
+        'weight' => 2,
+      ])->save();
+    }
+    
+    // Add Media reference field to Teaching Resource Category block type
+    if (!FieldStorageConfig::loadByName('block_content', 'field_resource_files')) {
+      $logger->notice('Creating field_resource_files');
+      
+      // Create field storage
+      $field_storage = FieldStorageConfig::create([
+        'field_name' => 'field_resource_files',
+        'entity_type' => 'block_content',
+        'type' => 'entity_reference',
+        'settings' => [
+          'target_type' => 'media',
+        ],
+        'cardinality' => -1, // Unlimited values
+      ]);
+      $field_storage->save();
+      
+      // Create field instance on the block content type
+      $field = FieldConfig::create([
+        'field_storage' => $field_storage,
+        'bundle' => 'teaching_resource_category',
+        'label' => 'Resource Files',
+        'settings' => [
+          'handler' => 'default:media',
+          'handler_settings' => [
+            'target_bundles' => [
+              'document' => 'document', // Target the document media type
+            ],
+            'auto_create' => FALSE,
+          ],
+        ],
+      ]);
+      $field->save();
+      
+      // Set up form display to use Media Library widget
+      $form_display = EntityFormDisplay::load('block_content.teaching_resource_category.default');
+      if (!$form_display) {
+        $form_display = EntityFormDisplay::create([
+          'targetEntityType' => 'block_content',
+          'bundle' => 'teaching_resource_category',
+          'mode' => 'default',
+          'status' => TRUE,
+        ]);
+      }
+      $form_display->setComponent('field_resource_files', [
+        'type' => 'media_library_widget',
+        'weight' => 3,
+        'settings' => [
+          'media_types' => ['document'],
+        ],
+        'third_party_settings' => [],
+      ])->save();
+      
+      // Set up view display to use rendered entity
+      $view_display = EntityViewDisplay::load('block_content.teaching_resource_category.default');
+      if (!$view_display) {
+        $view_display = EntityViewDisplay::create([
+          'targetEntityType' => 'block_content',
+          'bundle' => 'teaching_resource_category',
+          'mode' => 'default',
+          'status' => TRUE,
+        ]);
+      }
+      $view_display->setComponent('field_resource_files', [
+        'type' => 'entity_reference_entity_view',
+        'weight' => 3,
+        'label' => 'hidden',
+        'settings' => [
+          'view_mode' => 'default',
+          'link' => FALSE,
+        ],
+        'third_party_settings' => [],
+      ])->save();
+      
+      $logger->notice('Media reference field has been added to Teaching Resource Category blocks');
+    }
+  }
+  catch (\Exception $e) {
+    $logger->error('Error creating fields: @error', [
+      '@error' => $e->getMessage(),
+    ]);
+    throw $e;
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function teaching_resources_setup_uninstall() {
+  $logger = \Drupal::logger('teaching_resources_setup');
+  $logger->notice('Uninstalling Teaching Resources Setup module');
+  
+  try {
+    // Remove block placements
+    $block_ids = [
+      'teachingresourcesmain',
+      'teaching_unit_1_science',
+      'teaching_unit_2_environment',
+      'teaching_unit_3_society',
+    ];
+
+    foreach ($block_ids as $block_id) {
+      $block = Block::load($block_id);
+      if ($block) {
+        $logger->notice('Deleting block placement: @id', ['@id' => $block_id]);
+        $block->delete();
+      }
+    }
+
+    // Remove block content entities
+    $storage = \Drupal::entityTypeManager()->getStorage('block_content');
+    
+    // Delete teaching resource category blocks
+    $logger->notice('Deleting teaching_resource_category blocks');
+    $query = $storage->getQuery()
+      ->condition('type', 'teaching_resource_category')
+      ->accessCheck(FALSE); // Disable access checks
+    $teaching_blocks = $query->execute();
+    if (!empty($teaching_blocks)) {
+      $logger->notice('Found @count teaching_resource_category blocks to delete', [
+        '@count' => count($teaching_blocks),
+      ]);
+      $blocks = $storage->loadMultiple($teaching_blocks);
+      foreach ($blocks as $block) {
+        $logger->notice('Deleting block: @title (ID: @id)', [
+          '@title' => $block->label(),
+          '@id' => $block->id(),
+        ]);
+        $block->delete();
+      }
+    }
+
+    // Delete teaching resources main blocks
+    $logger->notice('Deleting teaching_resources_main blocks');
+    $query = $storage->getQuery()
+      ->condition('type', 'teaching_resources_main')
+      ->accessCheck(FALSE); // Disable access checks
+    $main_blocks = $query->execute();
+    if (!empty($main_blocks)) {
+      $logger->notice('Found @count teaching_resources_main blocks to delete', [
+        '@count' => count($main_blocks),
+      ]);
+      $blocks = $storage->loadMultiple($main_blocks);
+      foreach ($blocks as $block) {
+        $logger->notice('Deleting block: @title (ID: @id)', [
+          '@title' => $block->label(),
+          '@id' => $block->id(),
+        ]);
+        $block->delete();
+      }
+    }
+    
+    // Note: We don't delete the field configuration or block types on uninstall
+    // to preserve site config. If these need to be deleted, they should be handled
+    // in a separate process or explicitly requested.
+    
+    $logger->notice('Teaching Resources Setup uninstallation completed successfully');
+    \Drupal::messenger()->addStatus(t('Teaching Resources blocks have been removed successfully.'));
+  }
+  catch (\Exception $e) {
+    $logger->error('Error during Teaching Resources Setup uninstallation: @error', [
+      '@error' => $e->getMessage(),
+    ]);
+    \Drupal::messenger()->addError(t('Error removing Teaching Resources blocks: @error', [
+      '@error' => $e->getMessage(),
+    ]));
+  }
+}

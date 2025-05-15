@@ -1,0 +1,19 @@
+{#
+/**
+ * @file
+ * Theme override to display the hero region.
+ */
+#}
+
+{% if content %}
+  <div class="hero-container">
+    <div class="swiper hero-swiper">
+      <div class="swiper-wrapper">
+        {{ content }}
+      </div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+{% endif %}

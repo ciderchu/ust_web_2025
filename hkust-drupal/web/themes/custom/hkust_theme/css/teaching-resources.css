@@ -1,0 +1,186 @@
+/* Teaching Resources Page Styling */
+
+/* Main section styling */
+.teaching-resources-title {
+    color: #C00404; /* Red color from About SES title */
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .teaching-resources-paragraph {
+    font-size: 1.1rem;
+    color: #333;
+    line-height: 1.6;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  /* Resource Category Styling */
+  .resource-category {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+  
+  .category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    background-color: #003366; /* HKUST blue color */
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .category-header:hover {
+    background-color: #004488; /* Slightly lighter blue on hover */
+  }
+  
+  .category-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  
+  .category-toggle {
+    font-size: 1.1rem;
+    transition: transform 0.3s;
+  }
+  
+  /* Rotate chevron when expanded */
+  .category-header[aria-expanded="true"] .category-toggle i {
+    transform: rotate(180deg);
+  }
+  
+  .category-content-inner {
+    padding: 1.5rem;
+    background-color: #f9f9f9;
+  }
+  
+  /* Download All button */
+  .download-all-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+  }
+  
+  .btn-download-all {
+    background-color: #9C885B; /* Gold color seen in VIEW ALL link */
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-download-all:hover {
+    background-color: #8a7a50; /* Darker gold for hover */
+    color: white;
+    text-decoration: none;
+  }
+  
+  .btn-download-all i {
+    margin-left: 0.5rem;
+  }
+  
+  /* Resource Item Styling */
+  .resources-list {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 1rem;
+  }
+  
+  .resource-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e9e9e9;
+  }
+  
+  .resource-item:last-child {
+    border-bottom: none;
+  }
+  
+  .resource-title {
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .resource-download-link {
+    color: #003366; /* HKUST blue */
+    font-size: 1.1rem;
+    transition: color 0.3s;
+  }
+  
+  .resource-download-link:hover {
+    color: #C00404; /* Red color on hover */
+    text-decoration: none;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 767px) {
+    .category-header {
+      padding: 1rem;
+    }
+    
+    .category-title {
+      font-size: 1.1rem;
+    }
+    
+    .category-content-inner {
+      padding: 1rem;
+    }
+    
+    .resource-title {
+      font-size: 0.9rem;
+    }
+  }
+
+  .teaching-resources-page main {
+    margin: 80px 0 80px 0;
+    height: 100%;
+    min-height: 620px;
+  }
+
+  /* Hide field labels on Teaching Resources page */
+
+/* Hide teaching resources title field label */
+.field--name-field-teaching-resources-title .field__label,
+label[for="edit-field-teaching-resources-title-0-value"] {
+  display: none !important;
+}
+
+/* Hide teaching resources content field label */
+.field--name-field-teaching-resources-content .field__label,
+label[for="edit-field-teaching-resources-content-0-value"] {
+  display: none !important;
+}
+
+/* Hide category title field label */
+.field--name-field-category-title .field__label,
+label[for="edit-field-category-title-0-value"] {
+  display: none !important;
+}
+
+/* Hide resources list field label */
+.field--name-field-resources-list .field__label,
+label[for="edit-field-resources-list-0-value"] {
+  display: none !important;
+}
+
+/* Hide any other block content labels */
+.block-content--type-teaching-resources-main .field__label,
+.block-content--type-teaching-resource-category .field__label {
+  display: none !important;
+}
+
+/* Ensure frontend display doesn't show labels */
+.teaching-resources-section .field__label,
+.resource-category-section .field__label {
+  display: none !important;
+}

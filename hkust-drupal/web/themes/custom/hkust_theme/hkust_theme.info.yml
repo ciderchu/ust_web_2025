@@ -1,0 +1,20 @@
+name: HKUST Theme
+type: theme
+description: 'Custom Drupal 10 theme for IAS-style homepage.'
+core_version_requirement: ^10
+package: Custom
+base theme: classy
+
+libraries:
+  - hkust_theme/global
+
+regions:
+  header: 'Header'
+  primary_menu: 'Primary Menu'
+  hero: 'Hero Banner'
+  content: 'Main Content'
+  stats: 'Stats Section'
+  news: 'News & Media'
+  testimonial: 'Testimonial Section'
+  footer: 'Footer'
+  bottom_footer: 'Bottom Footer'
