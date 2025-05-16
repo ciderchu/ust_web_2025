@@ -1,6 +1,10 @@
 .funded-by-section {
     padding: 2rem 0;
     background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
   
   .funded-by-label {
@@ -11,8 +15,73 @@
   }
   
   .funded-by-logo {
-    max-height: 80px;
+    max-height: 60px;
     width: auto;
     object-fit: contain;
   }
   
+  /* Organization name container */
+  .organisation-name {
+    margin-bottom: 2rem;
+  }
+  
+  /* IENV logo specific styling */
+  .funded-by-inev {
+    max-height: 165px !important;
+  }
+
+  .funded-by-qef {
+    max-height: 60px !important;
+  }
+ 
+  /* Sponsor container */
+  .funded-by-sponsor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Mobile responsive adjustments */
+  @media (max-width: 767px) {
+    .funded-by-section {
+      padding: 1.5rem 15px; /* Add horizontal padding on mobile */
+    }
+    
+    .organisation-name {
+      margin-bottom: 1.5rem;
+    }
+    
+    /* Make IENV logo smaller on mobile */
+    .funded-by-inev {
+      max-height: 120px !important;
+    }
+    
+    /* Make QEF logo smaller on mobile */
+    .funded-by-qef {
+      max-height: 60px !important;
+    }
+    
+    .funded-by-label {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .funded-by-section {
+      padding: 1rem 15px;
+    }
+    
+    /* Even smaller logos for very small screens */
+    .funded-by-inev {
+      max-height: 100px !important;
+    }
+    
+    .funded-by-qef {
+      max-height: 50px !important;
+    }
+    
+    .funded-by-label {
+      font-size: 1rem;
+    }
+  }

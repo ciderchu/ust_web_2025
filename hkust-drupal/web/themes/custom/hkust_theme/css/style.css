@@ -5,21 +5,17 @@ html, body {
   position: relative;
 }
 
-
-
-
 /* Main navigation styling */
 .top-bar {
-    background-color: #003366 !important;
-    height: 40px !important; 
-    border: none;
-  }
-  
-  .navbar-brand {
-    padding-right: 12px;
-    margin-right: 0px;
-  }
+  background-color: #003366 !important;
+  height: 40px !important; 
+  border: none;
+}
 
+.navbar-brand {
+  padding-right: 12px;
+  margin-right: 0px;
+}
 
 /* Main navbar container */
 .navbar {
@@ -45,6 +41,7 @@ html, body {
     max-width: 100%;
     padding-left: 3rem;
     padding-right: 3rem;
+  
   }
   
   /* Add some visual indication for sticky state */
@@ -64,99 +61,203 @@ html, body {
 
 /* Logo sizing that maintains aspect ratio */
 .navbar-brand img {
-    max-height: 75px;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-  }
-  
-  .logo-img {
-    max-height: 75px;
-    width: auto;
-  }
-  
-  /* Ensure proper scaling at different breakpoints */
-  @media (max-width: 767px) {
-    .navbar-brand img {
-      max-height: 60px;
-    }
-    
-    .logo-img {
-      max-height: 60px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .navbar-brand img {
-      max-height: 50px;
-    }
-    
-    .logo-img {
-      max-height: 50px;
-    }
-  }
+  max-height: 75px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
 
+.logo-img {
+  max-height: 75px;
+  width: auto;
+}
 
-  .navbar-nav .nav-link {
-    font-size: 0.75rem;
-    color: #003366 !important;
-    font-family: 'Open Sans', sans-serif;
-    padding: 0.5rem 1rem;
-  
+/* For screens below 992px, show burger and hide nav items */
+@media (max-width:  992px) {
+  .navbar-toggler {
+    display: block !important;
+    margin-left: auto; /* align right */
   }
   
-  .navbar-nav .nav-link:hover {
-    color: #C00404 !important;
-    font-family: 'Open Sans', sans-serif;
+  .navbar-collapse {
+    display: none !important;
   }
   
-  .logo-img {
-    min-width: 200px;
-    max-width: 100%;
-    height: auto;
+  .navbar-collapse.show {
+    display: block !important;
   }
+}
 
-  .line-1 {
-    text-decoration: none;
-    color: #003366;
-    font-weight: bold;
-    font-size: 1.1rem;
-    line-height: 1.2;
-    border-left: 0.8px solid #003366;
-    padding-left: 20px;
-    white-space: nowrap;
-    min-height: 50px;
-    align-items: center;
+@media (min-width: 991.98px) {
+  .navbar-toggler {
+    display: none !important;
+  }
+  
+  .navbar-collapse {
+    display: flex !important;
+  }
+}
+
+/* Ensure proper scaling at different breakpoints */
+@media (max-width: 767px) {
+  .navbar {
+    padding: 0.3rem 0.3rem; /* CHANGED: Reduced padding to push content to far left */
+    min-height: auto;
+  }
+ 
+  .navbar-brand {
+    flex-shrink: 0;
+    padding-right: 3px !important;
+    padding-left: 0 !important; /* ADDED: Remove left padding */
+    margin-left: 0 !important; /* ADDED: Remove left margin */
     display: flex;
+    align-items: center;
+    flex-direction: row;
   }
-  
-  /* Responsive adjustments */
-  @media (max-width: 991px) {
-    .line-1 {
-      font-size: 16px;
-    }
+ 
+  .navbar-brand img {
+    max-height: 28px;
   }
-  
-  @media (max-width: 767px) {
-    .line-1 {
-      display: none; /* Hide on very small screens */
-    }
-    
-    .navbar-brand {
-      padding-right: 0 !important;
-      
-    }
+ 
+  .logo-img {
+    max-height: 28px;
   }
-  
-  body {
-    font-family: 'Open Sans', sans-serif;
-    overflow-x: hidden;
-  }
+ 
+  .line-1 {
 
-  .container-fluid,
+    display: none !important;
+    /* font-size: 12px !important;
+    padding-left: 5px !important;
+    white-space: normal;          ✅ allow wrapping
+    line-height: 1.2;
+    overflow-wrap: anywhere;      ✅ break mid-word if needed
+    word-break: break-word;       ✅ break long words
+    display: block !important;
+    text-align: left;
+    flex: 1 1 auto;                ✅ grow and shrink if needed
+    margin: 0;
+    border-left: 0.8px solid #003366;
+    max-width: calc(100vw - 120px); CHANGED: Dynamic width to prevent text overflow */
+  }
+ 
+  .navbar-brand img.logo-img {
+    max-height: 28px !important;
+    height: auto;
+    width: auto;
+    object-fit: contain;
+    display: block;
+  }
+ 
+  .navbar-toggler {
+    flex-shrink: 0;
+    padding: 0.2rem 0.4rem;
+    align-self: flex-start !important;
+    margin-top: 2px;
+  }
+  
+  .container {
+    padding-left: 0 !important; /* CHANGED: Remove default left padding */
+    padding-right: 5px !important; /* CHANGED: Minimal right padding */
+  }
+ 
+}
+
+/* Additional rule for very small screens */
+@media (max-width: 400px) {
+  .navbar {
+    padding: 0.2rem 0.2rem; /* CHANGED: Even less padding */
+  }
+  .navbar-brand img {
+    max-height: 26px !important;
+  }
+  .logo-img {
+    max-height: 26px !important;
+  }
+  .line-1 {
+    font-size: 11px !important;
+    line-height: 1.0;
+    max-width: calc(100vw - 80px); /* CHANGED: Even more space for text */
+  }
+  .navbar-toggler {
+    padding: 0.15rem 0.3rem;
+    margin-right: 30px;
+  }
+}
+/* Additional rule for very small screens */
+@media (max-width: 400px) {
+  .navbar {
+    padding: 0.2rem 0.2rem; /* CHANGED: Even less padding */
+  }
+  .navbar-brand img {
+    max-height: 26px !important;
+  }
+  .logo-img {
+    max-height: 26px !important;
+  }
+  .line-1 {
+    font-size: 11px !important;
+    line-height: 1.0;
+    max-width: calc(100vw - 80px); /* CHANGED: Even more space for text */
+  }
+  .navbar-toggler {
+    padding: 0.15rem 0.3rem;
+  }
+}
+
+.navbar-nav .nav-link {
+  font-size: 0.75rem;
+  color: #003366 !important;
+  font-family: 'Open Sans', sans-serif;
+  padding: 0.5rem 1rem;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #C00404 !important;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.logo-img {
+  min-width: 200px;
+  max-width: 100%;
+  height: auto;
+}
+
+.line-1 {
+  text-decoration: none;
+  color: #003366;
+  font-weight: bold;
+  font-size: 1.1rem;
+  line-height: 1.2;
+  border-left: 0.8px solid #003366;
+  padding-left: 20px;
+  white-space: nowrap;
+  min-height: 50px;
+  align-items: center;
+  display: flex;
+  margin-right: 30px;
+}
+
+/* Responsive adjustments for line-1 */
+@media (max-width: 991px) {
+  .line-1 {
+    font-size: 16px;
+  }
+}
+
+/* NEVER hide the title - it should always be visible */
+@media (max-width: 767px) {
+
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  overflow-x: hidden;
+}
+
+.container-fluid,
 .container {
-  padding-left: 0;
-  padding-right: 0;
+  padding-left: 15px; /* Add proper padding */
+  padding-right: 15px;
 }
 
 main, 
@@ -167,264 +268,286 @@ main,
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
-  
-  .region-primary-menu ul.menu {
-    display: flex;
-    gap: 1rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+
+.region-primary-menu ul.menu {
+  display: flex;
+  gap: 15px;
+  flex-wrap: nowrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.region-primary-menu ul.menu li {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.region-primary-menu ul.menu a {
+  font-size: 1rem;
+  color: #003366;
+  font-family: 'Open Sans', sans-serif;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+}
+
+.region-primary-menu ul.menu a:hover {
+  color: #C00404;
+}
+
+.navbar-toggler:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.navbar-toggler {
+  z-index: 1060;
+  align-self: center;
+  margin-left: auto !important;
+}
+
+.navbar-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.navbar-nav .nav-link {
+  padding: 0.75rem 1rem;
+  width: 100%;
+  font-weight: bold;
+}
+
+/* Fixed border line that doesn't move */
+.navbar::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: rgba(0,0,0,0.125); /* Bootstrap border color */
+  z-index: 1050;
+}
+
+/* Desktop specific dropdown adjustments */
+@media (min-width: 992px) {
+  .navbar-collapse {
+    position: static; /* Reset positioning for inline display */
   }
   
-  .region-primary-menu ul.menu li {
-    display: inline-block;
+  /* Ensure dropdown menus appear correctly */
+  .navbar .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: auto;
+    right: 0;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    border-top: none;
+    margin-top: 1px; /* Space for the border */
+    z-index: 1040;
   }
-  
-  .region-primary-menu ul.menu a {
-    font-size: 1rem;
-    color: #003366;
-    font-family: 'Open Sans', sans-serif;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-  }
-  
-  .region-primary-menu ul.menu a:hover {
-    color: #C00404;
-  }
-  
-  .navbar-toggler:focus {
-    outline: none;
-    box-shadow: none;
-  }
-  
-  .navbar-toggler {
-    z-index: 1060;
-  }
-  
-  .navbar-nav {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .navbar-nav .nav-link {
-    padding: 0.75rem 1rem;
-    width: 100%;
-    font-weight: bold;
-  }
-  
-  /* Fixed border line that doesn't move */
-  .navbar::after {
-    content: '';
+}
+
+/* Mobile specific styles */
+@media (max-width: 991.98px) {
+  .navbar-collapse {
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
-    height: 1px;
-    background-color: rgba(0,0,0,0.125); /* Bootstrap border color */
-    z-index: 1050;
-  }
-  
-  /* Desktop specific dropdown adjustments */
-  @media (min-width: 992px) {
-    .navbar-collapse {
-      position: static; /* Reset positioning for inline display */
-    }
-    
-    /* Ensure dropdown menus appear correctly */
-    .navbar .dropdown-menu {
-      position: absolute;
-      top: 100%;
-      left: auto;
-      right: 0;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-      border-top: none;
-      margin-top: 1px; /* Space for the border */
-      z-index: 1040;
-    }
-  }
-  
-  /* Mobile specific styles */
-  @media (max-width: 991.98px) {
-    .navbar-collapse {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background-color: #fff;
-      padding: 1rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      z-index: 1040;
-      border-top: none;
-    }
-  
-    .region-primary-menu ul.menu {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-  
-    .region-primary-menu ul.menu li {
-      border-bottom: 1px solid #eee;
-    }
-  
-    .region-primary-menu ul.menu a {
-      display: block;
-      padding: 0.75rem 1rem;
-      font-weight: 600;
-      font-size: 16px;
-      color: #003366;
-      font-family: 'Open Sans', sans-serif;
-    }
-  
-    .region-primary-menu ul.menu a:hover {
-      color: #C00404;
-    }
-    
-    /* Fix for logo display */
-    .navbar-brand img.logo-img {
-      height: auto;
-      max-height: 50px;
-      width: auto;
-      max-width: 100%;
-      object-fit: contain;
-    }
-    
-    /* Ensure logo doesn't get distorted */
-    .navbar-brand {
-      display: flex;
-      align-items: center;
-      max-width: 70%;
-
-    }
+    background-color: #fff;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 1040;
+    border-top: none;
   }
 
-  .navbar.sticky-top {
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 1030 !important;
-    width: 100%;
-    background-color: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  .region-primary-menu ul.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .region-primary-menu ul.menu li {
+    border-bottom: 1px solid #eee;
+  }
+
+  .region-primary-menu ul.menu a {
+    display: block;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    font-size: 16px;
+    color: #003366;
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  .region-primary-menu ul.menu a:hover {
+    color: #C00404;
   }
   
-  /* ===== HERO BANNER CSS ===== */
-  
-  /* Hero container structure */
-  .hero-container {
-    width: 100%;
-    margin-bottom: 2rem;
-    position: relative;
+  /* Fix for logo display */
+  .navbar-brand img.logo-img {
+    height: auto;
+    max-height: 50px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
   }
   
-  /* Basic swiper container */
+  /* Ensure logo doesn't get distorted */
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    max-width: 70%;
+  }
+}
+
+.navbar.sticky-top {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1030 !important;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* ===== HERO BANNER CSS ===== */
+
+/* Hero container structure */
+.hero-container {
+  width: 100%;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+/* Basic swiper container with responsive heights */
+.hero-swiper {
+  width: 100% !important;
+  height: 646px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Responsive hero banner heights */
+@media (max-width: 991px) {
   .hero-swiper {
-    width: 100% !important;
-    height: 646px;
-    position: relative;
-    overflow: hidden;
+    height: 450px;
   }
-  
-  /* Force slides to be full width and single display */
-  .swiper-slide {
-    width: 100% !important; /* Force full width */
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-    display: block !important; /* Force block display */
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s;
-    flex: 0 0 auto;
-  }
+}
 
-  .swiper-slide-active {
-    opacity: 1;
-    visibility: visible;
+@media (max-width: 767px) {
+  .hero-swiper {
+    height: 300px; /* Reduced height for mobile */
   }
-  
-  /* Ensure images fill the slide properly */
-  .banner-image {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-  
-  .banner-image img {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    width: 100% !important;
-    height: auto !important;
-    min-height: 200px !important;
-    background: red !important;
-  }
-  
-  /* Clear any floating elements that might affect slide layout */
-  .swiper-slide:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-  
-  /* Hide all field wrappers and labels within slides */
-  .swiper-slide .field__item,
-  .swiper-slide .field__label,
-  .swiper-slide .field__items {
-    display: block;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-  }
-  
-  /* Prevent field item stacking */
-  .field--name-field-image .field__items {
-    display: contents !important;
-  }
-  
-  /* Force single image display by hiding siblings when parent is active */
-  .swiper-slide-active ~ .swiper-slide-active {
-    display: none !important;
-  }
-  
-  /* Hide Drupal's default field wrappers that might be causing layout issues */
-  .field--name-field-image > .field__item {
-    width: 100%;
-    height: 100%;
-  }
-  
-  /* Styling for captions */
-  .banner-caption {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    padding: 15px;
-    z-index: 5;
-  }
-  
-  /* Navigation button styling */
-  .swiper-button-next,
-  .swiper-button-prev {
-    color: white !important;
-    background: rgba(0, 51, 102, 0.8);
-    opacity: 0.7; 
-    width: 40px !important;
-    height: 40px !important;
-    border-radius: 50%;
-    /* z-index: 100 !important; */
-    
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    color: white;
-  }
+}
 
-  /* Optional: move left/right from edges */
+@media (max-width: 480px) {
+  .hero-swiper {
+    height: 250px; /* Even smaller for very small screens */
+  }
+}
+
+/* Force slides to be full width and single display */
+.swiper-slide {
+  width: 100% !important; /* Force full width */
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: block !important; /* Force block display */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  flex: 0 0 auto;
+}
+
+.swiper-slide-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Ensure images fill the slide properly */
+.banner-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Fixed image sizing for mobile */
+.banner-image img {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important; /* Ensures full image coverage */
+  object-position: center !important;
+  min-height: 100% !important;
+}
+
+/* Clear any floating elements that might affect slide layout */
+.swiper-slide:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Hide all field wrappers and labels within slides */
+.swiper-slide .field__item,
+.swiper-slide .field__label,
+.swiper-slide .field__items {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Prevent field item stacking */
+.field--name-field-image .field__items {
+  display: contents !important;
+}
+
+/* Force single image display by hiding siblings when parent is active */
+.swiper-slide-active ~ .swiper-slide-active {
+  display: none !important;
+}
+
+/* Hide Drupal's default field wrappers that might be causing layout issues */
+.field--name-field-image > .field__item {
+  width: 100%;
+  height: 100%;
+}
+
+/* Styling for captions */
+.banner-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 15px;
+  z-index: 5;
+}
+
+/* Navigation button styling */
+.swiper-button-next,
+.swiper-button-prev {
+  color: white !important;
+  background: rgba(0, 51, 102, 0.8);
+  opacity: 0.7; 
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  color: white;
+}
+
+/* Optional: move left/right from edges */
 .swiper-button-next {
   right: 10px;
 }
@@ -441,179 +564,150 @@ main,
     height: 30px;
   }
 }
-  
-  .swiper-button-next:after,
-  .swiper-button-prev:after {
-    font-size: 18px !important;
-    font-weight: bold;
-  }
-  
-  .swiper-button-next:hover,
-  .swiper-button-prev:hover {
-    background: #C00404;
-    opacity: 0.7; 
-  }
-  
-  /* Pagination dots styling */
-  .swiper-pagination-bullet {
-    background: white;
-    opacity: 0.7;
-  }
-  
-  .swiper-pagination-bullet-active {
-    background: white;
-    opacity: 1;
-  }
-  
-  /* Remove "Submitted by admin" text */
-  .node__meta,
-  .node__submitted {
-    display: none !important;
-  }
-  
-  /* Hide field labels */
-  .field--name-field-banner-slider > .field__label,
-  .field--name-field-banner-slider > .field__item > .field__label,
-  .field--name-field-image > .field__label {
-    display: none !important;
-  }
-  
-  /* Responsive adjustments for hero banner */
-  @media (max-width: 991px) {
-    .hero-swiper {
-      height: 450px;
-    }
-  }
-  
-  @media (max-width: 767px) {
-    .hero-swiper {
-      height: 350px;
-    }
-    
-    .swiper-button-next,
-    .swiper-button-prev {
-      width: 35px !important;
-      height: 35px !important;
-    }
-    
-    .swiper-button-next:after,
-    .swiper-button-prev:after {
-      font-size: 16px !important;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .hero-swiper {
-      height: 250px;
-    }
-    
-    .swiper-button-next,
-    .swiper-button-prev {
-      width: 30px !important;
-      height: 30px !important;
-    }
-  }
 
-  /* Enhanced image sizing and positioning for hero banner */
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  font-size: 18px !important;
+  font-weight: bold;
+}
 
-/* Basic swiper container */
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background: #C00404;
+  opacity: 0.7; 
+}
 
+/* Pagination dots styling */
+.swiper-pagination-bullet {
+  background: white;
+  opacity: 0.7;
+}
+
+.swiper-pagination-bullet-active {
+  background: white;
+  opacity: 1;
+}
+
+/* Remove "Submitted by admin" text */
+.node__meta,
+.node__submitted {
+  display: none !important;
+}
+
+/* Hide field labels */
+.field--name-field-banner-slider > .field__label,
+.field--name-field-banner-slider > .field__item > .field__label,
+.field--name-field-image > .field__label {
+  display: none !important;
+}
+
+@media (max-width: 480px) {
+  .hero-swiper {
+    height: 250px;
+  }
+  
+  .swiper-button-next,
+  .swiper-button-prev {
+    width: 30px !important;
+    height: 30px !important;
+  }
+}
+
+/* Enhanced image sizing and positioning for hero banner */
 .swiper-wrapper {
   display: flex !important; /* Ensure this stays as block */
 }
 
 .hero-swiper {
-    width: 100%;
-    height: 100% ;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  /* Force slides to be full width and single display */
-  .swiper-slide {
-    width: 100% !important; /* Force full width */
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-    justify-content: center;
-  }
-  
-  /* Ensure images fill the slide properly */
-  .banner-image {
-    width: 100%;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-  }
-  
-  /* Direct child img selector to ensure specificity */
-  .banner-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* This ensures the image covers the entire container */
-    object-position: center; /* Center the image */
-    display: block !important;
-  }
-  
-  /* Target Drupal's field image wrappers specifically */
-  .field--name-field-image,
-  .field--name-field-image .field__item,
-  .field--name-field-image .field__items {
-    width: 100%;
-    height: 100%;
-    display: block;
-    margin: 0;
-    padding: 0;
-  }
-  
-  /* Additional specific selector to ensure image display */
-  .field--name-field-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-  }
-  
-  /* Super specific selectors to override Drupal's default styling */
-  .paragraph--type--banner-slider .field--name-field-image,
-  .paragraph--type--banner-slider .field--name-field-image .field__item,
-  .paragraph--type--banner-slider .field--name-field-image img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-  }
-  
-  /* Fix for responsive images */
-  picture, 
-  picture source,
-  picture img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  /* Hide any overflow that might be causing issues */
-  .hero-container {
-    overflow: hidden;
-    width: 100%;
-    height: auto;
-    position: relative;
-    width: 100vw !important;
-    max-width: 100vw !important;
-  }
+  width: 100%;
+  height: 100% ;
+  position: relative;
+  overflow: hidden;
+}
 
+/* Force slides to be full width and single display */
+.swiper-slide {
+  width: 100% !important; /* Force full width */
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  justify-content: center;
+}
 
-  .banner-image img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-  }
+/* Ensure images fill the slide properly */
+.banner-image {
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Direct child img selector to ensure specificity */
+.banner-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* This ensures the image covers the entire container */
+  object-position: center; /* Center the image */
+  display: block !important;
+}
+
+/* Target Drupal's field image wrappers specifically */
+.field--name-field-image,
+.field--name-field-image .field__item,
+.field--name-field-image .field__items {
+  width: 100%;
+  height: 100%;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+/* Additional specific selector to ensure image display */
+.field--name-field-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Super specific selectors to override Drupal's default styling */
+.paragraph--type--banner-slider .field--name-field-image,
+.paragraph--type--banner-slider .field--name-field-image .field__item,
+.paragraph--type--banner-slider .field--name-field-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* Fix for responsive images */
+picture, 
+picture source,
+picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Hide any overflow that might be causing issues */
+.hero-container {
+  overflow: hidden;
+  width: 100%;
+  height: auto;
+  position: relative;
+  width: 100vw !important;
+  max-width: 100vw !important;
+}
+
+.banner-image img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
 
 /* hide banner title */
-/* .field--name-field-media-image, */
 .field--name-field-media-image > .field__label {
   display: none !important;
 }
@@ -621,12 +715,51 @@ main,
   display: none !important;
 }
 
-
 /* homepage SES section */
-.about-ses-title { color: #C00404; font-weight: bold; text-align: center; }
-.about-ses-paragraph { font-size: 1.1rem; color: #333; }
-.about-ses-extra { background-color: #003366; color: white; border-radius: 8px; }
-.about-ses-extra ul li { margin-bottom: 0.75rem; }
+.about-ses-title { 
+  color: #C00404; 
+  font-weight: bold; 
+  text-align: center; 
+}
+.about-ses-paragraph { 
+  font-size: 1.1rem; 
+  color: #333; 
+}
+
+/* Mobile responsive fixes for SES section */
+@media (max-width: 767px) {
+  .about-ses-title {
+    font-size: 1.2rem; /* Smaller title on mobile */
+    margin-bottom: 1rem;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  
+  .about-ses-paragraph {
+    font-size: 1rem; /* Smaller body text on mobile */
+    padding: 0 15px; /* Add padding to prevent edge-to-edge text */
+    margin-bottom: 1rem;
+  }
+  
+  /* Fix for blue extra content box */
+  .about-ses-extra {
+    margin: 0 15px; /* Add side margins */
+    border-radius: 8px;
+  }
+  
+  .about-ses-extra .p-4 {
+    padding: 1rem !important; /* Reduce padding on mobile */
+  }
+}
+
+.about-ses-extra { 
+  background-color: #003366; 
+  color: white; 
+  border-radius: 8px; 
+}
+.about-ses-extra ul li { 
+  margin-bottom: 0.75rem; 
+}
 .block-hkust-theme-aboutsesblock {
   margin-top: 2rem; /* reasonable fixed spacing */
 }
@@ -635,8 +768,17 @@ main,
   .block-hkust-theme-aboutsesblock {
     margin-top: 1.5rem;
   }
-}
 
+  .about-ses-section.py-5 {
+  padding-top: 0px !important;
+}
+  
+  /* Force proper container padding */
+  .about-ses-section .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
 
 /* Events section styling */
 .events-section-wrapper {
@@ -964,7 +1106,6 @@ main,
   box-sizing: border-box;
 }
 
-
 /* Header with title and VIEW ALL button */
 .events-header {
   display: flex;
@@ -977,9 +1118,8 @@ main,
   color: #C00404;
   font-weight: bold;
   font-size: 2rem;
-  margin: 0;
+  margin: 15px;
 }
-
 
 /* Grid layout for events */
 .view-homepage-events .view-content {
@@ -1009,8 +1149,6 @@ main,
   display: flex;
   justify-content: center;
 }
-
-
 
 /* Individual event card */
 .event-card {
@@ -1131,8 +1269,36 @@ main,
   font-weight: bold;
 }
 
+/* Footer section fixes - CRITICAL for mobile */
 .funded-by-section {
   display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 2rem 15px; /* Add horizontal padding */
+}
+
+/* Mobile responsive adjustments for footer */
+@media (max-width: 767px) {
+  .funded-by-section {
+    padding: 1.5rem 15px;
+  }
+  
+  .organisation-name {
+    margin-bottom: 1.5rem;
+  }
+  
+  .funded-by-inev {
+    max-height: 120px !important; /* Smaller on mobile */
+  }
+  
+  .funded-by-sponsor .funded-by-label {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .funded-by-logo {
+    max-height: 60px !important; /* Smaller QEF logo on mobile */
+  }
 }
 
 /* For small screens */
@@ -1149,15 +1315,7 @@ main,
   }
 }
 
-
 /* remove duplicated banner */
-/* Fix for duplicated hero banners */
-/* .field--name-field-banner-slide .field--type-entity-reference-revisions .field__item:not(:first-child) .swiper-slide,
-.field--name-field-image .field__item:not(:first-child),
-.field--name-field-media-image .field__item:not(:first-child) {
-  display: none !important;
-} */
-
 /* Only hide duplicate hero banners in main content (not in header) */
 main .hero-container,
 main .hero-swiper,
@@ -1172,3 +1330,73 @@ header .swiper-slide {
   display: block !important;
 }
 
+
+
+
+/* Registration CTA Section Styles */
+.registration-cta-section {
+  background-color: #f8f9fa;
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+  border-top: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.registration-cta-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.registration-cta-text {
+  color: #003366;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.btn-registration-signup {
+  background-color: #003366;
+  color: white;
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.btn-registration-signup:hover {
+  background-color: #0056b3; /* Lighter blue on hover */
+  color: white;
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 51, 102, 0.2);
+}
+
+.btn-registration-signup:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.25);
+}
+
+/* Mobile responsive adjustments for registration CTA */
+@media (max-width: 767px) {
+  .registration-cta-section {
+    padding: 1.5rem 0;
+  }
+  
+  .registration-cta-text {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    padding: 0 15px;
+  }
+  
+  .btn-registration-signup {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+    

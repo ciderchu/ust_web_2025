@@ -116,7 +116,7 @@
     }
   }
   
-  /* Mobile adjustments */
+  /* Mobile adjustments - FIXED */
   @media only screen and (max-width: 1023px) {
     .footer {
       padding: 0 20px 9px;
@@ -139,19 +139,29 @@
       float: none;
     }
   
+    /* FIXED: Privacy link appears before social media */
     .footer .site-pages {
       margin: 12px 0;
+      order: 1; /* This will make it appear first */
+    }
+    
+    .footer .social-share-col {
+      padding: 0;
+      margin-bottom: 18px;
+      order: 2; /* This will make it appear second */
+    }
+    
+    /* Make footer content flexbox to control order */
+    .footer .content-locator {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
   
     .footer .site-pages a {
       font-size: 12px;
       line-height: 15px;
       margin: 0 15px;
-    }
-  
-    .footer .social-share-col {
-      padding: 0;
-      margin-bottom: 18px;
     }
   
     .footer .social-share-col .text {
@@ -169,12 +179,14 @@
       font-size: 9px;
       line-height: 11px;
       margin-bottom: 10px;
+      order: 4; /* Copyright comes last */
     }
   
     .footer .caring {
       margin-right: 0;
       margin-top: 10px;
       margin-bottom: 20px;
+      order: 3; /* Caring logo comes third */
     }
   }
   
