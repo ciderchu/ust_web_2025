@@ -105,15 +105,15 @@ function teaching_resources_setup_install() {
     <i class="fas fa-download"></i>
   </a>
 </div>
+EOD,
+
+      'unit_2_environment' => <<<EOD
 <div class="resource-item">
   <span class="resource-title">Life</span>
   <a href="/sites/default/files/2025-05/05%20Life.pdf" class="resource-download-link">
     <i class="fas fa-download"></i>
   </a>
 </div>
-EOD,
-
-      'unit_2_environment' => <<<EOD
 <div class="resource-item">
   <span class="resource-title">Evolution</span>
   <a href="/sites/default/files/2025-05/06%20Evolution.pdf" class="resource-download-link">
