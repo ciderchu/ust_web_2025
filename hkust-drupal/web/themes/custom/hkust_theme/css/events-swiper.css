@@ -1,7 +1,7 @@
 /* Events Swiper Styles (Fixed) */
 
 /* Fix background color and full-width behavior */
-.events-section-wrapper {
+/* .events-section-wrapper {
     background-color: #f5f8ff;
     padding: 3rem 0;
     width: 100vw;
@@ -12,16 +12,16 @@
     margin-left: -50vw;
     margin-right: -50vw;
     box-sizing: border-box;
-  }
+  } */
   
   /* Container for the swiper */
-  .events-swiper-container {
+  /* .events-swiper-container {
     position: relative;
     padding: 0 15px;
     margin: 0 auto;
     overflow: visible;
   }
-  
+   */
   /* Swiper specific settings */
   .events-swiper {
     width: 100%;

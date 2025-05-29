@@ -780,27 +780,18 @@ picture img {
   }
 }
 
-/* Events section styling */
-.events-section-wrapper {
-  background-color: #b0bed1;
-  padding: 3rem 0;
-  margin: 2rem 0;
-  width: 100%;
-  box-sizing: border-box;
-  position: relative;
-}
-
 /* Apply full-width effect with pseudo-element instead of negative margins */
+/* Background color overlay behind the content */
 .events-section-wrapper::before {
   content: '';
   position: absolute;
-  width: 100vw;
+  top: 0;
+  bottom: 0;
   left: 50%;
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
-  top: 0;
-  bottom: 0;
+  width: 100vw;
   background-color: #b0bed1;
   z-index: -1;
 }
@@ -1085,16 +1076,21 @@ picture img {
 
 /* Events section styling */
 .events-section-wrapper {
-  background-color: #f5f8ff;
-  padding: 3rem 0;
-  margin: 2rem 0;
-  width: 100vw !important; /* Use viewport width */
-  max-width: 100vw !important;
+  /* Layout and full-width control */
+  width: 100vw;
+  max-width: 100vw;
   position: relative;
   left: 50%;
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
+
+  /* Padding and spacing */
+  padding: 3rem clamp(2rem, 10vw, 10rem);
+  /* margin: 2rem 0; */
+
+  /* Background and box model */
+  background-color: #f5f8ff;
   box-sizing: border-box;
 }
 
@@ -1254,12 +1250,12 @@ picture img {
 }
 
 .events-nav-prev {
-  left: 0;
+  margin-left: 5%;
   display: none; /* Initially hidden */
 }
 
 .events-nav-next {
-  right: 0;
+  margin-right: 5%;
 }
 
 /* Adjust arrow icons */

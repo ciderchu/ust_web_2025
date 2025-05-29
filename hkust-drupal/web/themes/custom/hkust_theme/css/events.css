@@ -1,8 +1,18 @@
 /* Events List Page Styles */
+
+
 .events-page-wrapper {
     padding: 3rem 0;
     width: 100%;
   }
+
+  .events-section-wrapper h3 {
+  text-align: center;
+  color: #9C885B;
+  font-weight: normal; /* optional for softer look */
+  margin-top: 2rem;     /* optional for spacing */
+}
+
   
   .events-page-header {
     margin-bottom: 2.5rem;
