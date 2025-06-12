@@ -29,9 +29,7 @@ html, body {
 @media (min-width: 992px) {
   /* Sticky navbar class */
   .navbar {
-    position: sticky !important;
     top: 0;
-    z-index: 1030; /* High z-index to stay above other content */
     background-color: white; /* Ensure background is solid */
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Add shadow for visual separation */
   }
@@ -404,9 +402,7 @@ main,
 }
 
 .navbar.sticky-top {
-  position: sticky !important;
   top: 0 !important;
-  z-index: 1030 !important;
   width: 100%;
   background-color: white;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
