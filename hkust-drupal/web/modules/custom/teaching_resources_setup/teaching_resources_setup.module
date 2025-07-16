@@ -22,9 +22,13 @@ function teaching_resources_setup_block_view_alter(array &$build, \Drupal\Core\B
       if ($bundle === 'teaching_resource_category' || $bundle === 'teaching_resources_main') {
         // Add a cache tag specific to the block content entity
         $build['#cache']['tags'][] = 'block_content:' . $build['content']['#block_content']->id();
-        // Add a max-age of 0 for development to disable caching
-        // Remove this line in production
-        $build['#cache']['max-age'] = 0;
+        
+        // ✅ FIXED: Set reasonable cache time instead of disabling cache
+        // OLD PROBLEMATIC CODE: $build['#cache']['max-age'] = 0;
+        $build['#cache']['max-age'] = 3600; // Cache for 1 hour
+        
+        // Add context for proper cache invalidation
+        $build['#cache']['contexts'][] = 'url.path';
       }
     }
   }
@@ -46,24 +50,32 @@ function teaching_resources_setup_preprocess_block(&$variables) {
 /**
  * Helper function to refresh all teaching resource blocks.
  * 
- * Call this function if you need to force a rebuild of the blocks.
+ * ✅ FIXED: Use targeted cache invalidation instead of clearing all caches
  */
 function teaching_resources_setup_refresh_blocks() {
-  // Clear render cache
-  \Drupal::service('cache.render')->invalidateAll();
+  $logger = \Drupal::logger('teaching_resources_setup');
+  $cache_tags = [];
   
   // Get all teaching resource blocks
   $storage = \Drupal::entityTypeManager()->getStorage('block_content');
   $query = $storage->getQuery()
-    ->condition('type', 'teaching_resource_category');
+    ->condition('type', 'teaching_resource_category')
+    ->accessCheck(FALSE); // Add access check bypass
   $block_content_ids = $query->execute();
   
   if (!empty($block_content_ids)) {
-    // Touch blocks to trigger cache invalidation
-    $blocks = $storage->loadMultiple($block_content_ids);
-    foreach ($blocks as $block) {
-      $block->save();
+    // Collect cache tags for targeted invalidation
+    foreach ($block_content_ids as $id) {
+      $cache_tags[] = "block_content:$id";
     }
+    
+    // ✅ FIXED: Only invalidate specific cache tags instead of all render cache
+    // OLD PROBLEMATIC CODE: \Drupal::service('cache.render')->invalidateAll();
+    \Drupal::service('cache_tags.invalidator')->invalidateTags($cache_tags);
+    
+    $logger->notice('Refreshed @count teaching resource blocks', [
+      '@count' => count($block_content_ids),
+    ]);
   }
   
   return count($block_content_ids);
@@ -95,6 +107,8 @@ function teaching_resources_setup_generate_resources_html(array $resources, $fil
 /**
  * Helper function to update a teaching resource category block.
  *
+ * ✅ FIXED: Use targeted cache invalidation instead of clearing all render cache
+ *
  * @param string $title
  *   The category title.
  * @param array|string $resources
@@ -108,28 +122,34 @@ function teaching_resources_setup_update_category_block($title, $resources) {
   $storage = \Drupal::entityTypeManager()->getStorage('block_content');
   $query = $storage->getQuery()
     ->condition('type', 'teaching_resource_category')
-    ->condition('info', $title . ' Resources');
+    ->condition('info', $title . ' Resources')
+    ->accessCheck(FALSE); // Add access check bypass
   $block_ids = $query->execute();
   
   if (!empty($block_ids)) {
     $block = $storage->load(reset($block_ids));
     
-    // Generate resources HTML if an array was provided
-    $resources_html = is_array($resources) 
-      ? teaching_resources_setup_generate_resources_html($resources)
-      : $resources;
-    
-    // Update the block content
-    $block->set('field_resources_list', [
-      'value' => $resources_html,
-      'format' => 'full_html',
-    ]);
-    $block->save();
-    
-    // Force cache rebuild
-    \Drupal::service('cache.render')->invalidateAll();
-    
-    return $block;
+    if ($block) {
+      // Generate resources HTML if an array was provided
+      $resources_html = is_array($resources) 
+        ? teaching_resources_setup_generate_resources_html($resources)
+        : $resources;
+      
+      // Update the block content
+      $block->set('field_resources_list', [
+        'value' => $resources_html,
+        'format' => 'full_html',
+      ]);
+      $block->save();
+      
+      // ✅ FIXED: Use targeted cache invalidation instead of clearing all render cache
+      // OLD PROBLEMATIC CODE: \Drupal::service('cache.render')->invalidateAll();
+      \Drupal::service('cache_tags.invalidator')->invalidateTags([
+        'block_content:' . $block->id(),
+      ]);
+      
+      return $block;
+    }
   }
   
   return NULL;
